@@ -17,9 +17,8 @@ export const MONTHS = [
 
 export const MockEvents = [
     {
-        date: new Date(Date.UTC(2023, 4, 1, 9, 30, 0)).toISOString() , 
+        date: new Date(Date.UTC(2023, 7, 1, 9, 30, 0)).toISOString() , 
         title: 'Appointment' , 
-        desc: "I am having an appointment for our upcomming project with Project manager." , 
-        reminderTime: "09:30",
+       
     }
 ]

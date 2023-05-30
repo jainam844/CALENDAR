@@ -25,9 +25,9 @@ grid-template-columns: repeat(7, 1fr);
 
 export const HeadDay = styled.span`
 text-align: center;
-
-background: lightcoral;
+background: #ffdada;
 font-size: 1.2rem;
+font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 `;
 
 export const CalenderBody = styled.div`
@@ -49,7 +49,7 @@ export const StyledEvent = styled.span`
 display: flex;
 align-items: center;
 width: 100%;
-background: rgb(77 184 235);
+background: rgb(172 245 188);
 padding: 2px 10px;
 margin-bottom: 5px;
 border: 1px solid #e3e3e3;
