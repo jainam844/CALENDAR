@@ -22,3 +22,21 @@ export const MockEvents = [
        
     }
 ]
+export const Reminders = [
+    // {
+    //     title: "Match",
+    //     remainingTime: "20",
+    //     date: "",
+    //     eventTime: "",
+    //     reminderFullDate: new Date(),
+    //     eventFullDate: new Date()
+    // },
+    // {
+    //     title: "Appointment",
+    //     remainingTime: "30",
+    //     date: "",
+    //     eventTime: "",
+    //     reminderFullDate: new Date(),
+    //     eventFullDate: new Date()
+    // }
+]

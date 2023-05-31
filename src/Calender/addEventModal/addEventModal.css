@@ -14,7 +14,7 @@
     background: #ebebeb;
     position: absolute;
     width: 60%;
-    height: 400px;
+    height: 500px;
     top: 50%;
     left: 50%;
     border-radius: 6px;
@@ -41,8 +41,8 @@
   
   .delete-btn {
     display: inline-block;
-    left: -6px;
-    top: -13px;
+    left: 21px;
+    top: 317px;
     margin-left: 10px;
     padding: 5px 10px;
     background-color: #dc3545;
@@ -80,3 +80,27 @@ input {
     margin-right: 10px;
     cursor: pointer;
   }
+  .reminder-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffcc00;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    font-weight: bold;
+    animation: slideIn 0.5s ease-in-out;
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateX(-50%) translateY(100%);
+    }
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+  
