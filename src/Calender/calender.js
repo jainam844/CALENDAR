@@ -284,6 +284,8 @@ import {
 import { useState, useEffect, useRef } from 'react'
 import { EventModal } from './addEventModal/addEventModal'
 import './addEventModal/addEventModal.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Calender = ({
   startingDate,
@@ -343,35 +345,46 @@ export const Calender = ({
     setEventForm(eventOnDay || null)
     setSelectedEvent(eventOnDay)
   }
-
   const onAddEditEvent = (event, data, selectedDay, reminderVal) => {
     event.preventDefault()
+    if (!data || !data.title) {
+      toast.error('Please enter an event title!');
+      return;
+    }
+  
+    if (data && data.eventTime) {
+      const [eventHours, eventMinutes] = data.eventTime.split(':').map(Number)
+      const eventTime = new Date(
+        selectedDay.getFullYear(), // Year
+        selectedDay.getMonth(), // Month (0-based)
+        selectedDay.getDate() // Day
+      )
+      eventTime.setHours(eventHours)
+      eventTime.setMinutes(eventMinutes)
 
-    const [eventHours, eventMinutes] = data.eventTime.split(':').map(Number)
-    const eventTime = new Date(
-      selectedDay.getFullYear(), // Year
-      selectedDay.getMonth(), // Month (0-based)
-      selectedDay.getDate() // Day
-    )
-    eventTime.setHours(eventHours)
-    eventTime.setMinutes(eventMinutes)
-
-    const reminderTimeDate = new Date(eventTime.getTime() - reminderVal * 60000)
-    if (reminderVal != '') {
-      if (reminderTimeDate < new Date()) {
-        alert('Please select reminder value greater than the current time!!')
-      } else {
-        if (selectedEvent) {
-          editEvent(selectedEvent, data, selectedDay, reminderTimeDate)
-          setSelectedEvent(null)
+      const reminderTimeDate = new Date(
+        eventTime.getTime() - reminderVal * 60000
+      )
+      if (reminderVal !== '') {
+        if (reminderTimeDate < new Date()) {
+          toast.error(
+            'Please select a reminder value greater than the current time!!'
+          )
         } else {
-          addEvent(data, selectedDay, reminderTimeDate)
+          if (selectedEvent) {
+            editEvent(selectedEvent, data, selectedDay, reminderTimeDate)
+            setSelectedEvent(null)
+          } else {
+            addEvent(data, selectedDay, reminderTimeDate)
+          }
+          toggelModal()
+          setEventForm(null)
         }
-        toggelModal()
-        setEventForm(null)
+      } else {
+        toast.error('Please select a reminder value!!')
       }
     } else {
-      alert('Please select reminder value!!')
+      toast.error('Please enter an event time!')
     }
   }
 
@@ -589,7 +602,7 @@ export const Calender = ({
             className='overlay'
           >
             <div className='modal-content' onClick={e => e.stopPropagation()}>
-              <h4 className='form-heading'>Event</h4>
+         <h4>   {selectedEvent ? 'Edit Event' : 'Add Event'}</h4>
               <button
                 type='button'
                 className='close-btn'
@@ -600,13 +613,17 @@ export const Calender = ({
               >
                 <Icon.XLg />
               </button>
-              {
-                                showDeleteButton &&
-                                <button className="delete-btn" onClick={(e) => {
-                                    e.stopPropagation();
-                                    onRemoveEvent(eventForm);
-                                }}>delete</button>
-                            }
+              {showDeleteButton && (
+                <button
+                  className='delete-btn'
+                  onClick={e => {
+                    e.stopPropagation()
+                    onRemoveEvent(eventForm)
+                  }}
+                >
+                  delete
+                </button>
+              )}
               <form>
                 <div className='form-group mb-3'>
                   <label className='form-label'>Title</label>
@@ -628,9 +645,12 @@ export const Calender = ({
                     className='form-control'
                     value={eventForm ? eventForm.eventTime : ''}
                     onChange={e =>
-                      setEventForm({ ...eventForm, eventTime: e.target.value })
+                      setEventForm(prevForm => ({
+                        ...prevForm,
+                        eventTime: e.target.value
+                      }))
                     }
-                    type='text'
+                    type='time'
                     placeholder='hh:mm'
                     required
                   ></input>
@@ -641,6 +661,13 @@ export const Calender = ({
                     className='form-control form-select me-4 reminder-select'
                     aria-label='Default select example'
                     ref={reminderSelectRef}
+                    value={eventForm ? eventForm.reminderTime : ''}
+                    onChange={e =>
+                      setEventForm(prevForm => ({
+                        ...prevForm,
+                        reminderTime: e.target.value
+                      }))
+                    }
                   >
                     <option value=''>REMINDER Time</option>
                     <option value='5'>5 min before</option>
