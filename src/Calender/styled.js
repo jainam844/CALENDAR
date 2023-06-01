@@ -39,17 +39,17 @@ grid-template-rows: repeat(${({fourCol}) => fourCol ? 4 : 5}, 1fr);
 `;
 
 export const StyledDay = styled.span`
-border: 1px solid black;
+border: 1px solid #cdd5dd;
 text-align: right;
 padding: 10px;
-${({active}) => active && `background: rgb(249 166 166 / 59%);`}
+${({active}) => active && `background: rgb(221 235 237 / 59%);`}
 `;
 
 export const StyledEvent = styled.span`
 display: flex;
 align-items: center;
 width: 100%;
-background: rgb(172 245 188);
+background: #fbbbbb;
 padding: 2px 10px;
 margin-bottom: 5px;
 border: 1px solid #e3e3e3;

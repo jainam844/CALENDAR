@@ -104,3 +104,184 @@ input {
     }
   }
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .col-4 {
+    display: flex;
+    justify-content: end;
+    border-start: 2px solid;
+  }
+  
+  .border-start {
+    border-left: 2px solid;
+  }
+  
+  .reminder-btn {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .remd-num{
+    height: 20px;
+    width: 20px;
+    background-color: lightblue;
+    font-size: 15px;
+    border-radius: 50px;
+}
+  
+  .reminder-btn p {
+    margin-bottom: 0;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .remd-modal-content {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  
+  .form-heading {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  
+  .position-relative {
+    position: relative;
+  }
+  
+  .remd-num-badge {
+    position: absolute;
+    top: -6px;
+    right: 10px;
+    background-color: red;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    margin-top: 20px;
+  }
+  
+  .p-2 {
+    padding: 0.5rem;
+  }
+  
+  .border-bottom {
+    border-bottom: 2px solid;
+  }
+  
+  .snooze-select {
+    margin-right: 4px;
+  }
+  
+  .snooze-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .dissmiss-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .w-100 {
+    width: 100%;
+  }
+  
+  .h-100 {
+    height: 100%;
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  
+  .justify-content-center {
+    justify-content: center;
+  }
+  
+  .align-items-center {
+    align-items: center;
+  }
+  
+  .justify-content-between {
+    justify-content: space-between;
+  }
+  
+  .justify-content-start {
+    justify-content: start;
+  }
+  .btn1{
+       background: #eaebed;
+      color: rgb(5, 5, 5);
+      padding: 1px 14px;
+      border: none;
+      border-radius: 37px;
+      margin-right: 16px;
+      cursor: pointer;
+  }

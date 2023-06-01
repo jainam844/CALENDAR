@@ -1,267 +1,3 @@
-// import {
-//   Wrapper,
-//   CalenderHead,
-//   SevenColGrid,
-//   HeadDay,
-//   CalenderBody,
-//   StyledDay,
-//   StyledEvent
-// } from './styled'
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import * as Icon from 'react-bootstrap-icons'
-// import { Days, MONTHS } from './const'
-// import {
-//   range,
-//   getDaysInMonth,
-//   getSortedDays,
-//   areDatesTheSame,
-//   getDateobj
-// } from './util'
-// import { useState, useEffect } from 'react'
-// import { EventModal } from './addEventModal/addEventModal'
-// import './addEventModal/addEventModal.css'
-
-// export const Calender = ({
-//   startingDate,
-//   eventsArr,
-//   addEvent,
-//   editEvent,
-//   removeEvent
-// }) => {
-//   const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth())
-//   const [currentYear, setCurrentYear] = useState(startingDate.getFullYear())
-//   const DaysInMonth = getDaysInMonth(currentMonth, currentYear)
-//   const [selectedDay, setSelectedDay] = useState(new Date().getDay())
-//   const [selectedEvent, setSelectedEvent] = useState(null)
-//   const [eventForm, setEventForm] = useState({
-//     title: '',
-//     time: '',
-//     reminderTime: '' // Add the 'reminderTime' property
-//   });
-
-//   const [showDeleteButton, setShowDeleteButton] = useState(false)
-
-//   const [Modal, setModal] = useState(false)
-
-//   const toggelModal = () => {
-//     setModal(!Modal)
-//   }
-
-//   const nextMonth = () => {
-//     if (currentMonth < 11) {
-//       setCurrentMonth(prev => prev + 1)
-//     } else {
-//       setCurrentMonth(0)
-//       setCurrentYear(prev => prev + 1)
-//     }
-//   }
-
-//   const prevMonth = () => {
-//     if (currentMonth > 0) {
-//       setCurrentMonth(prev => prev - 1)
-//     } else {
-//       setCurrentMonth(11)
-//       setCurrentYear(prev => prev - 1)
-//     }
-//   }
-
-//   const loadData = thisevent => {
-//     const eventOnDay = eventsArr.find(
-//       event =>
-//         event.title === thisevent.title &&
-//         event.date === thisevent.date &&
-//         event.reminderTime === thisevent.reminderTime
-//     )
-//     setEventForm(eventOnDay || null)
-//     setSelectedEvent(eventOnDay || null)
-//   }
-//   const onAddEditEvent = (event, data, selectedDay) => {
-//     event.preventDefault();
-//     if (selectedEvent) {
-//       editEvent(selectedEvent, data);
-//       setSelectedEvent(null);
-//     } else {
-//       addEvent(data, selectedDay);
-//     }
-//     toggelModal();
-//     setEventForm(null);
-//   };
-
-//   const onRemoveEvent = eventToBeDel => {
-//     removeEvent(eventToBeDel)
-//     toggelModal()
-//     setEventForm(null)
-//     setSelectedEvent(null)
-//   }
-
-//   return (
-//     <Wrapper>
-//       <CalenderHead>
-//         <Icon.ArrowLeftCircleFill onClick={prevMonth} />
-//         <p className='m-0'>
-//           {MONTHS[currentMonth]} {currentYear}
-//         </p>
-//         <Icon.ArrowRightCircleFill onClick={nextMonth} />
-//       </CalenderHead>
-//       <SevenColGrid>
-//         {getSortedDays(currentMonth, currentYear).map(day => (
-//           <HeadDay>{day}</HeadDay>
-//         ))}
-//       </SevenColGrid>
-//       <CalenderBody fourCol={DaysInMonth === 28}>
-//         {range(DaysInMonth).map(day => {
-//           const dateObj = getDateobj(day, currentMonth, currentYear)
-//           const isCurrentDate = areDatesTheSame(new Date(), dateObj)
-//           const eventsOnDate = eventsArr.filter(event =>
-//             areDatesTheSame(dateObj, event.date)
-//           )
-//           return (
-//             <>
-//               <StyledDay
-//                 onClick={e => {
-//                   setSelectedDay(getDateobj(day, currentMonth, currentYear))
-//                   setEventForm(null)
-//                   setShowDeleteButton(false)
-//                   setSelectedEvent(null) // Clear the selectedEvent state for new events
-//                   toggelModal()
-//                 }}
-//                 active={areDatesTheSame(
-//                   new Date(),
-//                   getDateobj(day, currentMonth, currentYear)
-//                 )}
-//               >
-//                 <p>{day}</p>
-//                 {eventsArr.map(
-//                   event =>
-//                     areDatesTheSame(
-//                       getDateobj(day, currentMonth, currentYear),
-//                       event.date
-//                     ) && (
-//                       <StyledEvent>
-//                         <span
-//                           className='w-100 text-start'
-//                           type='button'
-//                           onClick={e => {
-//                             e.stopPropagation()
-//                             loadData(event)
-//                             setShowDeleteButton(true)
-//                             toggelModal()
-//                           }}
-//                         >
-//                           {event.title}
-//                         </span>
-//                       </StyledEvent>
-//                     )
-//                 )}
-//               </StyledDay>
-//               {Modal && (
-//                 <div className='modal'>
-//                   <div onClick={toggelModal} className='overlay'>
-//                     <div
-//                       className='modal-content'
-//                       onClick={e => e.stopPropagation()}
-//                     >
-//                       <h4 className='form-heading'>
-//                         {selectedEvent ? 'Edit Event' : 'Add Event'}
-//                       </h4>
-
-//                       <button
-//                         type='button'
-//                         className='close-btn'
-//                         onClick={toggelModal}
-//                       >
-//                         <Icon.XLg />
-//                       </button>
-
-//                       <form>
-//                       <div className='form-group mb-3'>
-//     <h4>
-//       <label className='form-label'>Title</label>
-//     </h4>
-//     <input
-//       type='text'
-//       className='form-control'
-//       value={eventForm?.title || ''}
-//       onChange={e =>
-//         setEventForm({
-//           ...eventForm,
-//           title: e.target.value
-//         })
-//       }
-//     />
-//   </div>
-
-//   <div className='form-group mb-3'>
-//     <h4>
-//       <label className='form-label'>Time</label>
-//     </h4>
-//     <input
-//       type='time'
-//       className='form-control'
-//       value={eventForm?.time || ''}
-//       onChange={e =>
-//         setEventForm({
-//           ...eventForm,
-//           time: e.target.value
-//         })
-//       }
-//     />
-//   </div>
-//   <div className='form-group mb-3'>
-//   <h4>
-//     <label className='form-label'>Reminder Time</label>
-//   </h4>
-//   <input
-//     type='time'
-//     className='form-control'
-//     value={eventForm?.reminderTime || ''}
-//     onChange={e =>
-//       setEventForm({
-//         ...eventForm,
-//         reminderTime: e.target.value
-//       })
-//     }
-//   />
-// </div>
-
-//                         {/* ... */}
-//                         <div className='d-flex justify-content-end'>
-//                           <button
-//                             className='save-event'
-//                             disabled={!eventForm?.title} // Disable the button if the title is not filled
-//                             style={{ opacity: eventForm?.title ? 1 : 0.5, cursor: eventForm?.title ? 'pointer' : 'not-allowed' }}
-//                             onClick={e => {
-//                               e.stopPropagation()
-//                               onAddEditEvent(e, eventForm, selectedDay)
-//                             }}
-//                           >
-//                             Save
-//                           </button>
-
-//                           {showDeleteButton && (
-//                             <button
-//                               className='delete-btn'
-//                               onClick={e => {
-//                                 e.stopPropagation()
-//                                 onRemoveEvent(eventForm)
-//                               }}
-//                             >
-//                               Delete
-//                             </button>
-//                           )}
-//                         </div>
-//                       </form>
-//                     </div>
-//                   </div>
-//                 </div>
-//               )}
-//             </>
-//           )
-//         })}
-//       </CalenderBody>
-//     </Wrapper>
-//   )
-// }
 import {
   Wrapper,
   CalenderHead,
@@ -284,8 +20,8 @@ import {
 import { useState, useEffect, useRef } from 'react'
 import { EventModal } from './addEventModal/addEventModal'
 import './addEventModal/addEventModal.css'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const Calender = ({
   startingDate,
@@ -348,10 +84,10 @@ export const Calender = ({
   const onAddEditEvent = (event, data, selectedDay, reminderVal) => {
     event.preventDefault()
     if (!data || !data.title) {
-      toast.error('Please enter an event title!');
-      return;
+      toast.error('Please enter an event title!')
+      return
     }
-  
+
     if (data && data.eventTime) {
       const [eventHours, eventMinutes] = data.eventTime.split(':').map(Number)
       const eventTime = new Date(
@@ -457,7 +193,7 @@ export const Calender = ({
   return (
     <Wrapper>
       <CalenderHead className='row'>
-        <div className='col-8 d-flex justify-content-around align-items-center'>
+        <div className='col-10 d-flex justify-content-around align-items-center'>
           <Icon.ArrowLeftCircleFill onClick={prevMonth} type='button' />
           <p className='mb-0 fs-3'>
             <strong>
@@ -466,74 +202,107 @@ export const Calender = ({
           </p>
           <Icon.ArrowRightCircleFill onClick={nextMonth} type='button' />
         </div>
-        {/* <div className="col-4 d-flex justify-content-end border-start border-2">
-                  <button className="reminder-btn d-flex align-items-center position-relative" onClick={toggelReminderModal}>
-                      <span className="remd-num me-2">{remindersArr.length}</span>
-                      <Icon.Bell className="me-2" />
-                      <p className="mb-0">Reminder</p>
+        <div className='col-2 d-flex justify-content-end border-start border-2'>
+          <button
+            className='reminder-btn btn1 d-flex align-items-center position-relative'
+            onClick={toggelReminderModal}
+          >
+            <span className='remd-num me-2'>{remindersArr.length}</span>
+            <Icon.Bell className='me-2' />
+            <p className='mb-0'>Reminder</p>
+            
+          </button>
+          {reminderModal && (
+            <div className='modal'>
+              <div onClick={toggelReminderModal} className='overlay'>
+                <div
+                  className='remd-modal-content'
+                  onClick={e => e.stopPropagation()}
+                >
+                  <div className='d-flex justify-content-start form-heading align-items-center'>
+                    <div className='position-relative'>
+                      <Icon.Bell className='me-3 fs-2' />
+                      <span className='remd-num-badge text-center'>
+                        {remindersArr.length}
+                      </span>
+                    </div>
+                    <h4 className='mb-0'>Reminder</h4>
+                  </div>
+                  <button
+                    type='button'
+                    className='close-btn'
+                    onClick={toggelReminderModal}
+                  >
+                    <Icon.XLg />
                   </button>
-                  {
-                      reminderModal &&
-                      <div className="modal">
-                          <div onClick={toggelReminderModal} className="overlay">
-                              <div className="remd-modal-content" onClick={(e) => e.stopPropagation()}>
-                                  <div className="d-flex justify-content-start form-heading align-items-center">
-                                      <div className="position-relative">
-                                          <Icon.Bell className="me-3 fs-2" />
-                                          <span className="remd-num-badge text-center">{remindersArr.length}</span>
-                                      </div>
-                                      <h4 className="mb-0">Reminder</h4>
-                                  </div>
-                                  <button type="button" className="close-btn" onClick={toggelReminderModal}><Icon.XLg /></button>
-                                  <div className="modal-body">
-                                      {remindersArr.length > 0 ?
-                                          (remindersArr.map((reminder, index) =>
-                                              <div key={index} className="p-2 border-bottom border-2">
-                                                  <div className="d-flex justify-content-between ">
-                                                      <div className="d-flex justify-content-center align-items-center">
-                                                          <Icon.Calendar3 className="me-3" />
-                                                          <p className="mb-0">"{reminder.title}" event</p>
-                                                      </div>
-                                                      <small>starts in {convertMilliseconds(reminder.remainingTime)} minutes</small>
-                                                  </div>
-                                                  <div className="d-flex justify-content-between my-3">
-                                                      <div className="d-flex justify-content-start">
-                                                          <select className="form-select me-4 snooze-select" aria-label="Default select example">
-                                                              <option value="">-----snooze-----</option>
-                                                             
-                                                              <option value="5">5 min before</option>
-                                                              <option value="10">10 min before</option>
-                                                              <option value="15">15 min before</option>
-                                                              <option value="20">20 min before</option>
-                                                              <option value="25">25 min before</option>
-                                                              <option value="30">30 min before</option>
-                                                             
-                                                          </select>
-                                                          <button className="snooze-btn" onClick={(e) => {
-                                                              e.stopPropagation();
-                                                              snoozeReminder(reminder, e.target.parentNode.querySelector('.snooze-select').value);
-                                                              ;
-                                                          }}>Snooze</button>
-                                                      </div>
-                                                      <button className="dissmiss-btn" onClick={(e) => {
-                                                          e.stopPropagation();
-                                                          dismissReminder(reminder);
-                                                      }}>Dissmiss</button>
-                                                  </div>
-                                              </div>
-                                          )) :
-                                          (
-                                              <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-                                                  <p>No reminders yet</p>
-                                              </div>
-                                          )
-                                      }
-                                  </div>
-                              </div>
+                  <div className='modal-body'>
+                    {remindersArr.length > 0 ? (
+                      remindersArr.map((reminder, index) => (
+                        <div key={index} className='p-2 border-bottom border-2'>
+                          <div className='d-flex justify-content-between '>
+                            <div className='d-flex justify-content-center align-items-center'>
+                              <Icon.Calendar3 className='me-3' />
+                              <p className='mb-0'>"{reminder.title}" event</p>
+                            </div>
+                            <small>
+                              starts in{' '}
+                              {convertMilliseconds(reminder.remainingTime)}{' '}
+                              minutes
+                            </small>
                           </div>
+                          <div className='d-flex justify-content-between my-3'>
+                            <div className='d-flex justify-content-start'>
+                              <select
+                                className='form-select me-4 snooze-select'
+                                aria-label='Default select example'
+                              >
+                                <option value=''>-----snooze-----</option>
+
+                                <option value='5'>5 min before</option>
+                                <option value='10'>10 min before</option>
+                                <option value='15'>15 min before</option>
+                                <option value='20'>20 min before</option>
+                                <option value='25'>25 min before</option>
+                                <option value='30'>30 min before</option>
+                              </select>
+                              <button
+                                className='snooze-btn'
+                                onClick={e => {
+                                  e.stopPropagation()
+                                  snoozeReminder(
+                                    reminder,
+                                    e.target.parentNode.querySelector(
+                                      '.snooze-select'
+                                    ).value
+                                  )
+                                }}
+                              >
+                                Snooze
+                              </button>
+                            </div>
+                            <button
+                              className='dissmiss-btn'
+                              onClick={e => {
+                                e.stopPropagation()
+                                dismissReminder(reminder)
+                              }}
+                            >
+                              Dissmiss
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
+                        <p>No reminders yet</p>
                       </div>
-                  }
-              </div> */}
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </CalenderHead>
       <SevenColGrid>
         {getSortedDays(currentMonth, currentYear).map(day => (
@@ -602,7 +371,7 @@ export const Calender = ({
             className='overlay'
           >
             <div className='modal-content' onClick={e => e.stopPropagation()}>
-         <h4>   {selectedEvent ? 'Edit Event' : 'Add Event'}</h4>
+              <h4> {selectedEvent ? 'Edit Event' : 'Add Event'}</h4>
               <button
                 type='button'
                 className='close-btn'
